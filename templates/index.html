@@ -1,10 +1,13 @@
 {{define "title"}}Elm app{{end}}
 
 {{define "body"}}
-<div id="app"></div>
+<div id="app">Pineapple</div>
 <script src="static/js/app.js"></script>
 <script>
-  var appContainer = document.getElementById('app');
-  Elm.App.embed(appContainer);
+var node = document.getElementById("app");
+var app = Elm.App.init({
+node
+})
 </script>
 {{end}}
+
