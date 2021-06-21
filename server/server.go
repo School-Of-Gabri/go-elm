@@ -1,14 +1,19 @@
 package main
 
 import (
-	"html/template"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"text/template"
 )
 
 func main() {
+	//Run function to build elm file
+	build_elm()
+
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
@@ -16,6 +21,26 @@ func main() {
 
 	log.Println("Listening on port 3000")
 	http.ListenAndServe(":3000", nil)
+}
+
+func build_elm() {
+
+	// get ELM execution path
+	elm_executeable, _ := exec.LookPath("elm")
+
+	// ELM make command
+	cmd_make_elm := &exec.Cmd{
+		Path:   elm_executeable,
+		Args:   []string{elm_executeable, "make", "src/App.elm", "--output", "static/js/app.js"},
+		Stdout: os.Stdout,
+		Stdin:  os.Stdin,
+	}
+
+	//Run ELM make command
+	if err := cmd_make_elm.Run(); err != nil {
+		fmt.Println("Error", err)
+	}
+
 }
 
 func serveTemplate(w http.ResponseWriter, r *http.Request) {

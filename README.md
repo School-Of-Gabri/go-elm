@@ -17,7 +17,7 @@ elm-package install
 Then, you can build your application and the Go server that is going to serve your Elm content.
 
 ```
-elm-make ./elm-src/App.elm --output static/js/app.js
+elm make ./src/App.elm --output static/js/app.js
 go build server/server.go
 ```
 
